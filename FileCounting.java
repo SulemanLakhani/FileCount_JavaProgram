@@ -1,89 +1,124 @@
-/**
+/**FileCounting.java
  * 
+ * This Program....Calculates the line count, word count and uniquewords count of a file
+ * Date:
  * 
- * 
- * 
+ * class name FileCounting
  */
 
-import java.util.*;
+ import java.util.*;
 import java.io.*;
 
 public class FileCounting{
+    // FileCounting counting = new FileCounting();
 
-    // public static void main(String[] args){
-        // C:\Users\user\Downloads\RMC Docs\CSCI213-01 Software Development\Labs\Lab3
+    public static void main(String[] args){
         
+        if(args.length==2){
+        String code = args[0];
+        String file = args[1];
 
-        // Scanner scan = new Scanner(file);
-        // while ( scan.hasNext() ) {
-        //     names.add( scan.nextLine() );
-        //     }
-        //     scan.close();
-    // }
-
-    public static int numLines(String str) throw IOException {
-        String fileLocation = "C:\\Users\\user\\Downloads\\RMC Docs\\CSCI213-01 Software Development\\Labs\\Lab3\\";
-        String aFile = fileLocation.append(str);
-        File file = new File(aFile);
-        LineNumberReader reader = null;
-
-        // String variable = "";
-        // int count = 0;
-        try{
-        // code to try
-        // and any dependent code
-        reader = new FileReader(file));
-        // Scanner scan = new Scanner(file);
-        while ((reader.readLine())!=null)
-        System.out.println("Count of lines - " + reader.getLineNumber());
-        // return reader.getLineNumber();
-        //    System.out.println();
-        } catch (IOException e){
-            // do something
-            return -1;
-            e.printStackTrace();
-        } finally{
-        if(reader= null)
-            // reader.close();
-            try {
-                reader.close();
-              } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
+        if(code.equals("-a")){
+            numLines(file);
+            // System.out.printf("There are %d lines in the file %s", numLines(file), file);
+            } else if(code.equals("-b")){
+            wordCount(file);
+            // System.out.printf("There are %d lines in the file %s", wordCount(file), file);
+            } else if(code.equals("-c")){
+            uniqueWords(file);
+            // System.out.printf("There are %d lines in the file %s", uniqueWords(file).size(), file);
+            } else if(code.equals("-d")){
+                System.out.println("Code should be -a, -b, or -c.");
+            }
         }
-    return count;
-    // System.out.printf("%s has %d lines.", str, count);
+        if(args.length<2 || args.length>2){
+                System.out.println("Too few arguments.");
+                System.out.println("Please rerun with arguments: [code] [file]");
+        }
     }
-    public static int wordCount(String str){
-        // int count = 0;
 
-        // File file = new File(str);
-        // Scanner scan = new Scanner(file);
-        // while ( scan.hasNext() ) {
-        //     count = scan.nextInt();
-        //     }
-        //     scan.close();
-        // return count;
-        int count =0;
-        System.out.println("Hello");
+
+    /**
+     * method to read the file and return the count of no. of lines in the file
+     * @param str
+     * @return count
+     * 
+     */
+    public static int numLines(String str)  {
+        int count = 0;
+        try {
+            File file = new File(str);
+            Scanner scan = new Scanner(file);
+            while( scan.hasNext() ) {
+                scan.nextLine();
+                count++;
+            }
+            scan.close();
+          } catch(Exception e) {
+            e.printStackTrace();
+            return -1;
+          }
+    System.out.printf("There are %d lines in the file %s", count, str);
+    return count;
+    }
+
+    /**
+     * method to read the file and return the count of words in the file
+     * @param str
+     * @return count
+     */
+    public static int wordCount(String str){
+        int count=0;
+
+        try {
+            File file = new File(str);
+            Scanner scan1 = new Scanner(file);
+            while( scan1.hasNext() ) {
+                scan1.next();
+                count++;
+            }
+            scan1.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return -1;
+          }
+        System.out.printf("There are %d words in the file %s", count, str);
         return count;
     }
 
+    /**
+     * method to read the file, also find and return the
+     * words in the file as an arraylist without repetition
+     * @param str
+     * @return list
+     */
     public static ArrayList<String> uniqueWords(String str){
+        ArrayList<String> list = new ArrayList<String>();
         // int count = 0;
-
-        // File file = new File(str);
-        // Scanner scan = new Scanner(file);
-        // while ( scan.hasNext() ) {
-        //     count = scan.nextInt();
-        //     }
-        //     scan.close();
-        // return count;
-        ArrayList<String> array = new ArrayList<>();
-        System.out.println("Hello");
-        return array;
+        
+        try{
+            File file = new File(str);
+            Scanner scanner = new Scanner(file);
+            while( scanner.hasNext() ){
+                String line = scanner.next().replaceAll("\\p{Punct}+","").toLowerCase();
+                String wordStrings[] = line.split("\\p{Space}+");
+            for(String element: wordStrings){
+                    if(!list.contains(element))
+                    list.add(element);
+                }
+            }
+            // count = list.size();
+        System.out.printf("There are %d unique words in the file %s", list.size(), str);
+        scanner.close();
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        // for(int i=0; i<list.size(); i++){
+        //     System.out.print(list.get(i)+" ");
+        // }
+        // System.out.println("");
+        return list;
     }
-
 
 }
